@@ -1,0 +1,61 @@
+# - split-window (alias splitw)
+#   Window Split
+# - select-pane (alias selectp)
+#   select active pane
+
+
+### 1st Window
+## 1st Pane
+# Vertical split
+split-window -h -d
+# Move Right Pane 
+select-pane -R
+
+## 2nd Pane
+# Horizontal split
+split-window -d
+# SSH Connect
+send-keys "ssh linux" C-m
+# Move Under Pane
+select-pane -D
+
+## 3rd Pane
+# Horizontal split
+splitw -d
+# Move Under Pane
+select-pane -D
+
+## 4th Pane
+# Display Clock
+clock-mode
+
+# Move Left Pane
+select-pane -L
+
+
+### 2nd Window
+## Create New Window
+new-window
+
+## 1st Pane
+## Horizontal split
+splitw -d
+# Vertical split
+splitw -h -d
+# Move Right Pane
+select-pane -R
+
+## 2nd Pane
+# SSH Connect
+send-keys "ssh linux" C-m
+## Pane Resize(Over 7 lines)
+resize-pane -U 7
+# Move Under Pane
+select-pane -D
+
+
+### 3rd Window
+source-file ~/tmux/config/.tmux.local
+
+# Select 1st Window
+select-window -t 0
