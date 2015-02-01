@@ -1,0 +1,64 @@
+$if Bash
+# list the possibilities after an ambiguous completion
+set show-all-if-ambiguous off
+
+# beep sound setting audible / visible / none
+set bell-style none
+
+# the file or directory marking
+set visible-stats on
+
+# enable case-insensitive tab completion
+set completion-ignore-case on
+
+# Show hidden files at the time of tab completion.
+set match-hidden-files on
+
+# turns off 8th bit stripping
+set convert-meta off
+
+# enable 8bit input
+set meta-flag on
+set input-meta on
+
+# keep the 8bit for display
+set output-meta on
+
+# allow the command prompt to wrap to the next line
+set horizontal-scroll-mode Off
+
+$if Bash
+  # setting editing-mode vi-like or emacs-like key binding (default Emacs-like key binding)
+  #set editing-mode vi
+
+  # do history expansion when space entered
+  space: magic-space
+
+  # historical backward search with linehead string binded to Ctrl-x + p key
+  "\C-p": history-search-backward
+  # historical forward search with linehead string binded to Ctrl-x + n key
+  "\C-n": history-search-forward
+
+  # historical backward search with linehead string binded to up-key
+  "\e[A": history-search-backward
+  # historical forward search with linehead string binded to down-key
+  "\e[B": history-search-forward
+
+  # show "PATH" (Ctrl-x + p)
+  "\C-xp": "PATH=${PATH}\e\C-e\C-a\ef\C-f"
+
+  # insert the beginning and end of the double quotation marks,
+  # and move immediately after the beginning of the quotation marks
+  "\C-x\"": "\"\"\C-b"
+
+  # key-bind setting(esc + ??)
+  "\e\"": "\eb\"\ef\""
+  "\e\'": "\eb\'\ef\'"
+  "\e\`": "\eb\`\ef\`"
+  "\e\]": "\eb\[\ef\]"
+  "\e\[": "\eb\[\ef\]"
+  "\e\}": "\eb\{\ef\}"
+  "\e\{": "\eb\{\ef\}"
+  "\e\)": "\eb\(\ef\)"
+  "\e\(": "\eb\(\ef\)"
+$endif
