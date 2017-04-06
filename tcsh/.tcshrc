@@ -1,0 +1,152 @@
+## Environment variable configuration
+#
+# LANG
+#
+setenv LANG ja_JP.UTF-8
+
+#
+# PATH
+#
+setenv PATH ~/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+
+## Default shell configuration
+#
+# set prompt
+#
+if ( 0 == ${uid} ) then
+    set prompt="%B%{\033[31m%}%/%#%{\033[m%}%b "
+    set prompt2="%B%{\033[31m%}%R%#%{\033[m%}%b "
+    set prompt3="%B%{\033[31m%}%R is correct? [y,n]:%{\033[m%}%b "
+    if (${?REMOTEHOST} || ${?SSH_CONNECTION}) then
+        set prompt="%{\033[37m%}${HOST:ar:au} ${prompt}"
+    endif
+else
+    set prompt="%{\033[0;0m%}%~ >%{\033[m%} "
+    #set prompt="%{\033[0;0m%}%/>%{\033[m%} "
+    #set prompt="%{\033[0;37m%}%/>%{\033[m%} "
+    #set prompt1="%{\033[37m%}%/>%{\033[m%} "
+    #set prompt="[%Y/%W/%D %T] %{%{\033[34m%}${HOST:ar:au} %{\033[37m%}%/>%{\033[m%} "
+    #set prompt="%{%{\033[1;34m%}[%Y/%W/%D %T] ${HOST:ar:au} %{\033[37m%}%/>%{\033[m%} "
+    set prompt2="%{\033[0;0m%}%R>%{\033[m%} "
+    set prompt3="%{\033[0;0m%}%R is correct? [y,n]:%{\033[m%} "
+
+    #set prompt2="%{\033[0;37m%}%R>%{\033[m%} "
+    #set prompt3="%{\033[0;37m%}%R is correct? [y,n]:%{\033[m%} "
+    if (${?REMOTEHOST} || ${?SSH_CONNECTION}) then
+        set prompt="%{\033[0;0m%}%Y/%W/%D %T ${HOST:ar:au} ${prompt}"
+        #set prompt="%{\033[1;35m%}%Y/%W/%D %T ${HOST:ar:au} ${prompt}"
+
+        #set prompt="%{\033[1;35m%}%Y/%W/%D %T ${HOST:ar:au} ${prompt}"
+        #set prompt="%{\033[36m%}%Y/%W/%D %T %{\033[35m%}${HOST:ar:au} ${prompt}"
+        #set prompt="%{\033[37m%}%/ %{\033[1;34m%}${HOST:ar:au} [%Y/%W/%D %T] >%{\033[m%} "
+    endif
+endif
+
+## terminal configuration
+#
+if ( ${?TERM} ) then
+    switch ( "${TERM}" )
+    case kterm:
+    case kterm-color:
+    case xterm:
+        # set terminal title
+        alias postcmd echo -n '""'
+
+        breaksw
+    endsw
+endif
+
+# do spell-word editor command before each completion attempt
+#
+set autocorrect
+
+# do expand-history editor command before each completion attempt
+#
+set autoexpand
+
+# list the possibilities after an ambiguous completion
+#
+set autolist
+
+# enable color display for ls-F and ls
+#
+set color
+
+# enable color escape sequence for NLS message files
+#
+set colorcat
+
+# do spelling-correcte of command automatically
+#
+set correct=cmd
+
+# enable display and editing Japanese(UTF-8) code
+#
+set dspmbyte=utf8
+
+# list the all jobs (long format) when a job is suspended
+#
+set listjobs=long
+
+# never beep when complete
+#
+set matchbeep=never
+
+# stop the beep
+#
+set nobeep
+
+# disable the ding in the prompt
+#
+set noding
+
+# do not error when filename or directory completion gets fail
+#
+set nonomatch
+
+# notify as soon as possible when backgroup jobs get change
+#
+set notify
+
+# ask before `rm *' command
+#
+set rmstar
+
+# treat symlinks as normal status
+#
+set symlinks=ignore
+
+## Keybind configuration
+#
+# backward delete word binded to Ctrl-W
+#
+bindkey ^W backward-delete-word
+
+# historical backward search with linehead string binded to up-key
+#
+bindkey -k up history-search-backward
+
+# historical forward search with linehead string binded to down-key
+#
+bindkey -k down history-search-forward
+
+## Command history configuration
+#
+set histfile=~/.history-"${tty:as|/|-|}"
+set history=10000
+set savehist=10000
+set histdup=erase
+
+
+# merge history files
+#
+if ( -d /usr/bin/ ) then
+    touch ~/.tcshhistory$$ "${histfile}"
+    chmod 600 ~/.tcshhistory$$ "${histfile}"
+    cat ~/.history* | paste - - | sort | uniq -f 1 | \
+        awk '{print $1 "\n" substr($0, 14, length($0) - 13)}' | \
+        tail -${history} \
+        > ~/.tcshhistory$$
+    mv ~/.tcshhistory$$ "${histfile}"
+endif
