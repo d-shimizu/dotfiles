@@ -1,4 +1,13 @@
+""" Vim Configuration File
+
+" 文字コード
+set encoding=utf-8
+"set fileencoding=utf-8
+"set fileencodings=utf-8,cp932
+
+" 自動インデント
 set paste
+
 " シンタックスハイライト有効化 (背景黒向け。白はコメントアウト
 " されている設定を使用)
 syntax on
@@ -10,17 +19,19 @@ highlight CursorLine term=none cterm=none ctermfg=none ctermbg=darkgray
 "highlight CursorLine term=none cterm=none ctermfg=darkgray ctermbg=none
 set nohlsearch " 検索キーワードをハイライトしないように設定
 set cursorline " カーソルラインの強調表示を有効化
+
 " 行番号を表示
 set number
+
 " ステータスラインを表示
 set laststatus=2 " ステータスラインを常に表示
 set statusline=%F%r%h%= " ステータスラインの内容
 
+" 背景色
 set bg=dark
 
 "モードラインの有効無効
 set ml
-
 
 "検索結果をハイライトする
 set hls
@@ -42,3 +53,12 @@ set tabstop=4
 
 " タブを挿入するときの幅
 set shiftwidth=4
+
+" GNU GLOBAL
+map <C-h> :Gtags -f %<CR>
+map <C-j> :GtagsCursor<CR>
+map <C-n> :cn<CR>
+map <C-p> :cp<CR>
+
+" sudo redirection
+command W w !sudo tee % > /dev/null
