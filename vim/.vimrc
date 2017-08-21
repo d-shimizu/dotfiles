@@ -1,15 +1,46 @@
 """ Vim Configuration File
 
-" 文字コード
+""" Basic Setting {{{1
+"" Encoding
 set encoding=utf-8
 "set fileencoding=utf-8
-"set fileencodings=utf-8,cp932
+set fileencodings=ucs-bom,utf-8,iso-2022-jp,sjis,cp932,euc-jp,cp20932
 
-" 自動インデント
+"" tab indent setting
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0
+"set expandtab
+set smartindent
+
+"" colum number 
+set number
+
+"" paste
 set paste
 
-" シンタックスハイライト有効化 (背景黒向け。白はコメントアウト
-" されている設定を使用)
+set cursorline
+
+" StatusLine 
+set laststatus=2
+set statusline=%F%r%h%=
+
+" Background Color
+set bg=dark
+
+" Modeline
+set ml
+
+" hightligth of Search Result
+set hls
+"set nohlsearch
+
+set nows
+set nowrap
+set sm
+set wildmenu
+
+" Syntax Hightlight (背景黒向け。白はコメントアウトされている設定を使用)
 syntax on
 highlight Normal ctermbg=black ctermfg=grey
 highlight StatusLine term=none cterm=none ctermfg=black ctermbg=grey
@@ -17,48 +48,71 @@ highlight CursorLine term=none cterm=none ctermfg=none ctermbg=darkgray
 "highlight Normal ctermbg=grey ctermfg=black
 "highlight StatusLine term=none cterm=none ctermfg=grey ctermbg=black
 "highlight CursorLine term=none cterm=none ctermfg=darkgray ctermbg=none
-set nohlsearch " 検索キーワードをハイライトしないように設定
-set cursorline " カーソルラインの強調表示を有効化
 
-" 行番号を表示
-set number
+" Reload {{{2
+nnoremap <Leader>r :source ~/.vimrc<CR>
 
-" ステータスラインを表示
-set laststatus=2 " ステータスラインを常に表示
-set statusline=%F%r%h%= " ステータスラインの内容
 
-" 背景色
-set bg=dark
+""" Key Binding {{{1
+let mapleader = ' '
+"" Split Window
+nnoremap ws :<C-u>sp<CR>
+nnoremap wv :<C-u>vs<CR>
 
-"モードラインの有効無効
-set ml
+"" Move to another split window
+nnoremap <Leader>h <C-w>h
+nnoremap <Leader>j <C-w>j
+nnoremap <Leader>k <C-w>k
+nnoremap <Leader>l <C-w>l
 
-"検索結果をハイライトする
-set hls
+" Resize split window
+nnoremap <Leader>L :10wincmd ><CR>
+nnoremap <Leader>H :10wincmd <<CR>
+nnoremap <Leader>K :resize +5<CR>
+nnoremap <Leader>J :resize -5<CR>
 
-"検索をファイルの末尾まで検索したら、ファイルの先頭へループする。
-set nows
-
-"ウィンドウの幅を超える行の折り返し設定。
-set nowrap
-
-"閉じ括弧が入力されたとき、対応する括弧を表示する。
-set sm
-
-"補完候補を表示する
-set wildmenu
-
-" タブを表示するときの幅
-set tabstop=4
-
-" タブを挿入するときの幅
-set shiftwidth=4
+" Tab
+nnoremap <Leader>t :tabnew<CR>
+"nnoremap <C-t> :tabnew<CR>
+nnoremap <Leader>n :tabnext<CR>
+nnoremap <Leader>p :tabprev<CR>
+nnoremap <Leader>th :tabmove -1<CR>
+nnoremap <Leader>tl :tabmove +1<CR>
 
 " GNU GLOBAL
-map <C-h> :Gtags -f %<CR>
-map <C-j> :GtagsCursor<CR>
-map <C-n> :cn<CR>
-map <C-p> :cp<CR>
+nmap <C-g> :Gtags -g
+nmap <C-G> :Gtags -f %<CR>
+nmap <C-j> :GtagsCursor<CR>
+nmap <C-j> :Gtags <C-r><C-w><CR>
+nmap <C-k> :Gtags -r <C-r><C-w><CR>
+nmap <C-n> :cn<CR>
+nmap <C-p> :cp<CR>
 
-" sudo redirection
-command W w !sudo tee % > /dev/null
+"" sudo redirection
+"command W w !sudo tee % > /dev/null
+cmap w!! w !sudo tee % > /dev/null
+
+""" Plugins {{{1
+set nocompatible
+filetype plugin indent off
+
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+
+  set runtimepath+=~/.vim/bundle/neobundle.vim
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+call neobundle#end()
+
+filetype plugin indent on
+"}}}
+
+" vim: foldmethod=marker
+" vim: foldcolumn=3
+" vim: foldlevel=0
