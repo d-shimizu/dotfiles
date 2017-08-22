@@ -56,8 +56,10 @@ nnoremap <Leader>r :source ~/.vimrc<CR>
 """ Key Binding {{{1
 let mapleader = ' '
 "" Split Window
-nnoremap ws :<C-u>sp<CR>
-nnoremap wv :<C-u>vs<CR>
+nnoremap <Leader>ws :<C-w>sp<CR>
+nnoremap <Leader>\| :<C-w>vs<CR>
+"nnoremap <Leader>ws :<C-u>sp<CR>
+"nnoremap <Leader>| :<C-u>vs<CR>
 
 "" Move to another split window
 nnoremap <Leader>h <C-w>h
@@ -78,6 +80,9 @@ nnoremap <Leader>n :tabnext<CR>
 nnoremap <Leader>p :tabprev<CR>
 nnoremap <Leader>th :tabmove -1<CR>
 nnoremap <Leader>tl :tabmove +1<CR>
+
+" Macker
+noremap <Leader>fc :<C-u>:foldclose<CR>
 
 " GNU GLOBAL
 nmap <C-g> :Gtags -g
