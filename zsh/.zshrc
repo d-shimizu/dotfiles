@@ -4,9 +4,39 @@
 # functions, options, key bindings, etc.
 #
 
-autoload -U compinit
+## Completion configuration
+#
+autoload -Uz compinit
 compinit
+
+### Color
+export LSCOLORS=exfxcxdxbxegedabagacad
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'
+
+alias ls="ls -FG --color=auto"
+alias gls="gls --color"
+
+#zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
+zstyle ':completion:*' list-colors "${LS_COLORS}"
+
+
 zstyle ':completion:*:default' menu select=1
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*:descriptions' format '%BCompleting%b %U%d%u'
+
+
+DIRSTACKSIZE=100
+setopt AUTO_PUSHD
+
+function print_known_hosts (){
+    if [ -f $HOME/.ssh/known_hosts ]; then
+        cat $HOME/.ssh/known_hosts | tr ',' ' ' | cut -d' ' -f1
+    fi
+}
+_cache_hosts=($( print_known_hosts ))
 
 #allow tab completion in the middle of a word
 setopt COMPLETE_IN_WORD
@@ -17,10 +47,19 @@ setopt COMPLETE_IN_WORD
 #setopt HUP
 
 ## history
-#setopt APPEND_HISTORY
 ## for sharing history between zsh processes
-#setopt INC_APPEND_HISTORY
-#setopt SHARE_HISTORY
+HISTFILE=~/.zsh_history
+HISTSIZE=1000000
+SAVEHIST=$HISTSIZE
+setopt hist_expire_dups_first
+setopt hist_ignore_dups     # ignore duplication command history list
+setopt share_history        # share command history data
+setopt extended_history
+setopt hist_ignore_space
+setopt inc_append_history
+
+alias history='history -t "%Y-%m-%d %a %H:%M:%S"'
+function history-all { history 1 }
 
 ## never ever beep ever
 #setopt NO_BEEP
@@ -31,14 +70,12 @@ setopt COMPLETE_IN_WORD
 ## disable mail checking
 #MAILCHECK=0
 
-# autoload -U colors
+#autoload -U colors
 #colors
 
 
 ## Default shell configuration
-#
 # set prompt
-#
 case ${UID} in
 0)     # root (uid=0)
     PROMPT="%B%{[35m%}%/#%{[m%}%b "
@@ -48,65 +85,50 @@ case ${UID} in
         PROMPT="%{[35m%}${USER}@${HOST%%.*} ${PROMPT}"
     ;;
 *)     # not root (uid!=0)
-    #PROMPT="%{[0;0m%}%/%%%{[m%} "
     PROMPT="%{[0;0m%}%~ %%%{[m%} "
     PROMPT2="%{[0;0m%}%_%%%{[m%} "
     SPROMPT="%{[0;0m%}%r is correct? [n,y,a,e]:%h[m%} "
     [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-        #PROMPT="%{[36m%} %D %T %{[35m%}${USER}@${HOST%%.*} ${PROMPT}"
-
         PROMPT="%{[0;0m%}%D{%Y/%m/%d %T} ${HOST%%.*} ${PROMPT}"
-        #PROMPT="%{[0;0m%}%D{%Y/%m/%d %T} CentOS6 ${PROMPT}"
-        #PROMPT="%{[1;35m%}%D{%Y/%m/%d %T} ${HOST%%.*} ${PROMPT}"
-
-        #PROMPT="%{[1;35m%}%D{%Y/%m/%d %T} ${USER}@${HOST%%.*} ${PROMPT}"
-        #PROMPT="%{[1;36m%}%D{%Y/%m/%d %T} %{[35m%}${USER}@${HOST%%.*} ${PROMPT}"
-        #PROMPT="%{[1;35m%}${USER}@${HOST%%.*} ${PROMPT}"
-        #PROMPT="%{[36m%}${USER}@${HOST%%.*} ${PROMPT}"
     ;;
 esac
 
 # set terminal title including current directory
-#
-
 case "${TERM}" in
 kterm*|xterm)
     precmd() {
         echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
     }
+    export LSCOLORS=exfxcxdxbxegedabagacad
+    export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+    zstyle ':completion:*' list-colors 'di=34' 'ln=35' 'so=32' 'ex=31' 'bd=46;34' 'cd=43;34'
     ;;
 esac 
 
 
 # auto change directory
-#
 setopt auto_cd
 
 # auto directory pushd that you can get dirs list by cd -[tab]
-#
 setopt auto_pushd
 
 # command correct edition before each completion attempt
-#
 setopt correct
 
 # compacked complete list display
-#
 setopt list_packed
 
 # no beep sound when complete list displayed
-#
 setopt nolistbeep
 
 ## Keybind configuration
-#
 # emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes 
 #   to end of it)
-#
 bindkey -e
+bindkey '^]'   vi-find-next-char
+bindkey '^[^]' vi-find-prev-char
 
 # historical backward/forward search with linehead string binded to ^P/^N
-#
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
@@ -114,32 +136,36 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
 
 ## Command history configuration
-#
 HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=1000000
+SAVEHIST=$HISTSIZE
+setopt hist_expire_dups_first
 setopt hist_ignore_dups     # ignore duplication command history list
 setopt share_history        # share command history data
+setopt extended_history
+setopt hist_ignore_space
+setopt inc_append_history
 
-## Completion configuration
-#
-autoload -U compinit
-compinit
+alias history='history -t "%Y-%m-%d %a %H:%M:%S"'
+function history-all { history 1 }
+
 
 #if [ $SHLVL = 1 ]; then
 #    alias tmux="tmux new-session \; source-file ~/tmux/.tmux.session"
 #fi
 #alias tmux="tmux new-session \; source-file ~/tmux/.tmux.session"
 #export SCREENRC="${SCREENRC:-$HOME/.screenrc}"
-export COLORFGBG='15;0'
+
+COLORFGBG='15;0'
 ##printf "\033k$HOSTNAME\033\\"
 
 ## LANG
-#
 LANG=ja_JP.UTF-8
 
 ## EDITOR
-#
 EDITOR=vim
 
-export LANG EDITOR
+## ZDOTDIR
+#ZDOTDIR=$HOME/.zsh/
+
+export LANG EDITOR ZDOTDIR COLORFGBG
