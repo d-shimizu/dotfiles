@@ -74,7 +74,14 @@ setopt COMPLETE_IN_WORD
 #setopt HUP
 
 ## history
-## for sharing history between zsh processes
+## historical backward/forward search with linehead string binded to ^P/^N
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+
+# for sharing history between zsh processes
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=$HISTSIZE
@@ -154,28 +161,6 @@ setopt nolistbeep
 bindkey -e
 bindkey '^]'   vi-find-next-char
 bindkey '^[^]' vi-find-prev-char
-
-# historical backward/forward search with linehead string binded to ^P/^N
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^P" history-beginning-search-backward-end
-bindkey "^N" history-beginning-search-forward-end
-
-## Command history configuration
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=$HISTSIZE
-setopt hist_expire_dups_first
-setopt hist_ignore_dups     # ignore duplication command history list
-setopt share_history        # share command history data
-setopt extended_history
-setopt hist_ignore_space
-setopt inc_append_history
-
-alias history='history -t "%Y-%m-%d %a %H:%M:%S"'
-function history-all { history 1 }
-
 
 #if [ $SHLVL = 1 ]; then
 #    alias tmux="tmux new-session \; source-file ~/tmux/.tmux.session"
