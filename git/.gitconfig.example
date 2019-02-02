@@ -3,5 +3,5 @@
 	name = foo
 
 [url "github:"]
-    InsteadOf = https://github.com/
-    InsteadOf = git@github.com:
+	InsteadOf = https://github.com/
+	InsteadOf = git@github.com:
