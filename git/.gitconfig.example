@@ -5,3 +5,6 @@
 [url "github:"]
 	InsteadOf = https://github.com/
 	InsteadOf = git@github.com:
+
+[core]
+	ditor = vim -c \"set fenc=utf-8\"
