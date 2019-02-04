@@ -8,3 +8,9 @@
 
 [core]
 	ditor = vim -c \"set fenc=utf-8\"
+
+[color]
+	ui = true
+
+[push]
+	default = current
