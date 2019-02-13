@@ -179,6 +179,12 @@ COLORFGBG='15;0'
 ## ZDOTDIR
 #ZDOTDIR=$HOME/.zsh/
 
+#
+# include .git-prompt.sh
+#
+source $HOME/.git-prompt.sh
+
+
 MYSQL_PS1="\u@`hostname`[\d] \\D > "
 
 export LANG EDITOR ZDOTDIR COLORFGBG MYSQL_PS1
