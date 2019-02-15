@@ -107,6 +107,12 @@ function history-all { history 1 }
 #autoload -U colors
 #colors
 
+#
+# include .git-prompt.sh
+#
+source $HOME/.git-prompt.sh
+setopt prompt_subst
+RPROMPT='[%c$(__git_ps1 " (%s)")]'
 
 ## Default shell configuration
 # set prompt
@@ -178,11 +184,6 @@ COLORFGBG='15;0'
 
 ## ZDOTDIR
 #ZDOTDIR=$HOME/.zsh/
-
-#
-# include .git-prompt.sh
-#
-source $HOME/.git-prompt.sh
 
 
 MYSQL_PS1="\u@`hostname`[\d] \\D > "
