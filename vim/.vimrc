@@ -16,10 +16,11 @@ set smartindent
 "" colum number 
 set number
 
+"" colum number highlight
+set cursorline
+
 "" paste
 set paste
-
-set cursorline
 
 " StatusLine 
 set laststatus=2
