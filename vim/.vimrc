@@ -22,6 +22,9 @@ set cursorline
 "" paste
 set paste
 
+"" disable .swp file
+set noswapfile
+
 " StatusLine 
 set laststatus=2
 set statusline=%F%r%h%=
