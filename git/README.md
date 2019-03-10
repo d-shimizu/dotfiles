@@ -1,14 +1,16 @@
 ---
-* 公開鍵・秘密鍵作成
-* 公開鍵をGitHubに登録
-* .ssh/config設定
+1. ssh公開鍵・秘密鍵作成
+    (略)
+2. 公開鍵をGitHubに登録
+    (略)
+3. .ssh/config設定
 ```
 Host github github.com
   HostName github.com
-  IdentityFile ~/.ssh/id_git_rsa #ここに自分の鍵のファイル名
+  IdentityFile ~/.ssh/id_git_rsa #登録した公開鍵に対応する秘密鍵を指定
   User git
 ```
-* 接続確認
+4. 接続確認
 ```
 $ ssh -T git@github.com
 ```
@@ -17,9 +19,10 @@ or
 ssh -T github
 ```
 
-## リポジトリへの接続
+リポジトリへの接続
+------
 
-* リポジトリへの接続設定
+* リポジトリへの接続設定(リポジトリ名/.git/configの設定)
 ```
 git remote set-url origin git@github.com:[gihubユーザ名]/[gihubリポジトリ].git
 ```
