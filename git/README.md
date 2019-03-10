@@ -24,17 +24,20 @@ ssh -T github
 githubのリポジトリへのssh接続設定
 --------
 
-1. リポジトリへの接続設定(リポジトリ名/.git/configの設定)
+a. リポジトリへの接続設定(リポジトリ名/.git/configの設定)
 ```
 git remote set-url origin git@github.com:[gihubユーザ名]/[gihubリポジトリ].git
 ```
-2. ~/.gitconfig設定
+
+or 
+
+b. ~/.gitconfig設定
 ```:~/.gitconfig
 [url "github:"]
 	InsteadOf = https://github.com/
 	InsteadOf = git@github.com:
 ```
-or
+b. (push only)
 ```
 git config --global "url.git@github.com:.pushinsteadof" "https://github.com/"
 ```
