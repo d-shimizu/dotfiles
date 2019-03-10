@@ -1,5 +1,6 @@
 githubへの接続設定
----
+--------
+
 1. ssh公開鍵・秘密鍵作成
     (略)
 2. 公開鍵をGitHubに登録
@@ -21,13 +22,13 @@ ssh -T github
 ```
 
 リポジトリへの接続
-------
+--------
 
-* リポジトリへの接続設定(リポジトリ名/.git/configの設定)
+1. リポジトリへの接続設定(リポジトリ名/.git/configの設定)
 ```
 git remote set-url origin git@github.com:[gihubユーザ名]/[gihubリポジトリ].git
 ```
-* ~/.gitconfig設定
+2. ~/.gitconfig設定
 ```:~/.gitconfig
 [url "github:"]
 	InsteadOf = https://github.com/
