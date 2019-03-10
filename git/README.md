@@ -27,7 +27,7 @@ ssh -T github
 ```
 git remote set-url origin git@github.com:[gihubユーザ名]/[gihubリポジトリ].git
 ```
-* gitconfig設定
+* ~/.gitconfig設定
 ```:~/.gitconfig
 [url "github:"]
 	InsteadOf = https://github.com/
