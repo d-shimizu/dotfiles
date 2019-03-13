@@ -49,5 +49,11 @@ vim ~/.gitconfig
 git config --global "url.git@github.com:.pushinsteadof" "https://github.com/"
 ```
 
+※初回のみ
+```
+git push --set-upstream origin master
 
+or 
 
+git push -u origin master
+```
