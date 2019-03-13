@@ -36,7 +36,10 @@ b. githubのリポジトリへのssh接続設定
 git remote add origin https://github.com/[gihubユーザ名]/[gihubリポジトリ].git
 ```
 
-```:~/.gitconfig
+```
+vim ~/.gitconfig
+
+### 以下を追記
 [url "github:"]
 	InsteadOf = https://github.com/
 	InsteadOf = git@github.com:
