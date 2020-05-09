@@ -1,5 +1,8 @@
 """ Vim Configuration File
 
+au FileType vim setlocal foldmethod=marker
+"""au FileType vim setlocal foldmethod=marker
+
 """ Basic Setting {{{1
 "" Encoding
 set encoding=utf-8
