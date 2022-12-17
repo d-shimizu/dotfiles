@@ -73,6 +73,13 @@ setopt COMPLETE_IN_WORD
 ## restart running processes on exit
 #setopt HUP
 
+## Keybind configuration
+# emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes
+#   to end of it)
+bindkey -e
+bindkey '^]'   vi-find-next-char
+bindkey '^[^]' vi-find-prev-char
+
 ## history
 ## historical backward/forward search with linehead string binded to ^P/^N
 autoload history-search-end
@@ -80,6 +87,10 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end
+bindkey '^R' history-incremental-search-backward
+bindkey '^S' history-incremental-search-forward
+bindkey '^P' history-beginning-search-backward
+bindkey '^N' history-beginning-search-forward
 
 # for sharing history between zsh processes
 HISTFILE=~/.zsh_history
@@ -161,13 +172,6 @@ setopt list_packed
 # no beep sound when complete list displayed
 setopt nolistbeep
 
-## Keybind configuration
-# emacs like keybind (e.x. Ctrl-a goes to head of a line and Ctrl-e goes 
-#   to end of it)
-bindkey -e
-bindkey '^]'   vi-find-next-char
-bindkey '^[^]' vi-find-prev-char
-
 #if [ $SHLVL = 1 ]; then
 #    alias tmux="tmux new-session \; source-file ~/tmux/.tmux.session"
 #fi
@@ -189,3 +193,9 @@ COLORFGBG='15;0'
 MYSQL_PS1="\u@`hostname`[\d] \\D > "
 
 export LANG EDITOR ZDOTDIR COLORFGBG MYSQL_PS1
+
+
+if [[ -t 0 ]]; then
+  stty stop undef
+  stty start undef
+fi
