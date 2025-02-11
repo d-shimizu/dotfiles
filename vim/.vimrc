@@ -37,9 +37,6 @@ set smartindent
 "" colum number
 set number
 
-"" colum number highlight
-set cursorline
-
 "" paste
 "" set paste
 if &term =~ "xterm"
@@ -80,14 +77,37 @@ set nowrap
 set sm
 set wildmenu
 
+"" colum number highlight
+set cursorline
+"highlight CursorLine ctermbg=Black
+"highlight CursorLine ctermfg=Blue
+
 " Syntax Hightlight (背景黒向け。白はコメントアウトされている設定を使用)
 syntax on
-highlight Normal ctermbg=black ctermfg=grey
-highlight StatusLine term=none cterm=none ctermfg=black ctermbg=grey
-highlight CursorLine term=none cterm=none ctermfg=none ctermbg=darkgray
+"highlight Normal ctermbg=black ctermfg=gray
+"highlight StatusLine term=none cterm=none ctermfg=black ctermbg=darkgray
+"highlight CursorLine term=none cterm=none ctermfg=none ctermbg=darkgray
+"highlight CursorLine term=none cterm=none ctermfg=none ctermbg=none
+"highlight CursorLineNr term=bold cterm=NONE ctermfg=yellow ctermbg=NONE
+"highlight CursorLine ctermbg=black guibg=black
+"highlight CursorIM guifg=darkgray guibg=Purple
 "highlight Normal ctermbg=grey ctermfg=black
 "highlight StatusLine term=none cterm=none ctermfg=grey ctermbg=black
 "highlight CursorLine term=none cterm=none ctermfg=darkgray ctermbg=none
+
+" https://qiita.com/usamik26/items/f733add9ca910f6c5784
+"let &t_ti.="\e[1 q"
+"let &t_SI.="\e[5 q"
+"let &t_EI.="\e[1 q"
+"let &t_te.="\e[0 q"
+"let &t_ti.="\e[5 q"
+"let &t_SI.="\e[1 q"
+"let &t_EI.="\e[5 q"
+"let &t_te.="\e[0 q"
+let &t_ti.="\e[5 q"
+let &t_SI.="\e[5 q"
+let &t_EI.="\e[5 q"
+let &t_te.="\e[5 q"
 
 "半角文字の設定
 set guifont=MS_Gothic:h9
@@ -102,7 +122,9 @@ nnoremap <Leader>r :source ~/.vimrc<CR>
 
 """ Key Binding {{{1
 " https://maku77.github.io/vim/keymap/mapleader.html
-let mapleader = ' '
+"let mapleader = ' '
+" , + 何かでコマンドを実行する
+let mapleader = ','
 
 "" Split Window
 nnoremap <Leader>ws :<C-w>sp<CR>
@@ -141,8 +163,8 @@ nmap <C-G> :Gtags -f %<CR>
 nmap <C-j> :GtagsCursor<CR>
 nmap <C-j> :Gtags <C-r><C-w><CR>
 nmap <C-k> :Gtags -r <C-r><C-w><CR>
-nmap <C-n> :cn<CR>
-nmap <C-p> :cp<CR>
+"nmap <C-n> :cn<CR>
+"nmap <C-p> :cp<CR>
 
 "" sudo redirection
 "command W w !sudo tee % > /dev/null
@@ -183,6 +205,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-goimports'
 Plug 'mattn/vim-lsp-settings'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end()
@@ -193,9 +216,6 @@ call plug#end()
 "   map　：　再帰的マップ
 "   noremap ：　非再帰的マップ
 nmap <C-f> :NERDTreeToggle<CR>
-let g:airline#extensions#tabline#enabled = 1
-nmap <C-P> <Plug>AirlineSelectPrevTab
-nmap <C-N> <Plug>AirlineSelectNextTab
 
 " /* Airline SETTINGS */
 "  https://original-game.com/vim-airline/
@@ -204,8 +224,6 @@ nmap <C-N> <Plug>AirlineSelectNextTab
 "    mkdir -p ~/.local/share/fonts
 "    cd ~/.local/share/fonts && curl -fLo "Droid Sans Mono for Powerline Nerd Font Complete.otf" https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
 let g:airline_powerline_fonts = 1
-
-let g:airline#extensions#tabline#enabled = 1
 nmap <C-p> <Plug>AirlineSelectPrevTab
 nmap <C-n> <Plug>AirlineSelectNextTab
 let g:airline_theme = 'wombat'               " テーマの指定
@@ -291,12 +309,47 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+	inoremap <expr> <cr> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"
 endfunction
 
 augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+command! LspDebug let lsp_log_verbose=1 | let lsp_log_file = expand('~/lsp.log')
+
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+" let g:asyncomplete_auto_popup = 1
+" let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_popup_delay = 200
+let g:lsp_text_edit_enabled = 1
+let g:lsp_preview_float = 1
+let g:lsp_diagnostics_float_cursor = 1
+
+" gopls setting
+" exec: go install golang.org/x/tools/gopls@latest
+let g:lsp_settings_filetype_go = ['gopls', 'golangci-lint-langserver']
+let g:lsp_settings = {}
+let g:lsp_settings['gopls'] = {
+  \  'workspace_config': {
+  \    'usePlaceholders': v:true,
+  \    'analyses': {
+  \      'fillstruct': v:true,
+  \    },
+  \  },
+  \  'initialization_options': {
+  \    'usePlaceholders': v:true,
+  \    'analyses': {
+  \      'fillstruct': v:true,
+  \    },
+  \  },
+  \}
+
+" For snippets
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 "}}}
 
