@@ -7,7 +7,7 @@
 	InsteadOf = git@github.com:
 
 [core]
-	ditor = vim -c \"set fenc=utf-8\"
+	editor = vim -c \"set fenc=utf-8\"
 
 [color]
 	ui = true
