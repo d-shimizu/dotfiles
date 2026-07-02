@@ -1,0 +1,21 @@
+# 個人情報・認証情報を含むファイルは *.example のみ管理する
+.ssh/*
+!.ssh/*.example
+git/.gitconfig
+git/config
+
+# Claude Code のローカル設定
+claude/settings.local.json
+
+# 秘密鍵・認証情報
+*.pem
+*.key
+id_*
+.env
+.env.*
+
+# OS・エディタが生成するファイル
+.DS_Store
+*.swp
+*.swo
+*~
