@@ -14,7 +14,7 @@
 | `tmux/` | tmux 設定・起動用スクリプト | `~/.tmux.conf` |
 | `git/` | git 設定のサンプル・GitHub への SSH 接続手順（[git/README.md](git/README.md)） | `~/.gitconfig` |
 | `.ssh/` | SSH 設定のサンプル | `~/.ssh/config` |
-| `claude/` | Claude Code のユーザー共通指示（`CLAUDE.md`）とルール（`rules/`） | `~/.claude/CLAUDE.md`, `~/.claude/rules` |
+| `claude/` | Claude Code のユーザー共通指示（`CLAUDE.md`）・ルール（`rules/`）・フック用スクリプト（`hooks/`） | `~/.claude/CLAUDE.md`, `~/.claude/rules`, `~/.claude/hooks` |
 
 ## セットアップ
 
@@ -31,6 +31,7 @@ ln -s $DOTFILES/tmux/.tmux.conf ~/.tmux.conf
 # Claude Code
 ln -s $DOTFILES/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -s $DOTFILES/claude/rules ~/.claude/rules
+ln -s $DOTFILES/claude/hooks ~/.claude/hooks
 ```
 
 `*.example` のファイルはユーザー名やホスト名などがダミー値になっているため、コピーしてから環境に合わせて編集する（`git/config.example` は各リポジトリの `.git/config` のサンプル）。
